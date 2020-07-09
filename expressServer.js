@@ -20,6 +20,10 @@ app.get("/ejsTest", function (req, res) {
   res.render("test");
 });
 
+app.get("/inputTest", function (req, res) {
+  res.render("inputTest");
+});
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });
