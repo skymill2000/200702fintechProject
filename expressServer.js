@@ -28,8 +28,12 @@ app.get("/inputTest", function (req, res) {
 });
 
 app.post("/getLoginData", function (req, res) {
+  var userId = req.body.ajaxUserId;
+  var userPassword = req.body.ajaxUserPassword;
   console.log("req body : ", req.body);
-  res.json("로그인 성공입니다.");
+  console.log(userId, userPassword);
+
+  res.json(userId + "분의 로그인 성공입니다.");
 });
 
 app.listen(3000, function () {
