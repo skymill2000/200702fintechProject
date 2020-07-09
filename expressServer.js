@@ -16,6 +16,10 @@ app.get("/htmlTest", function (req, res) {
   res.send("<html><h1>안녕하세요</h1><hr/><p>만들기 어렵습니다</p></html>");
 });
 
+app.get("/ejsTest", function (req, res) {
+  res.render("test");
+});
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });
