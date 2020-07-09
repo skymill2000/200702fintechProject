@@ -4,6 +4,9 @@ const app = express();
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.get("/", function (req, res) {
   res.send("Hello World");
 });
@@ -25,7 +28,7 @@ app.get("/inputTest", function (req, res) {
 });
 
 app.post("/getLoginData", function (req, res) {
-  console.log(req.body);
+  console.log("req body : ", req.body);
   res.json("로그인 성공입니다.");
 });
 

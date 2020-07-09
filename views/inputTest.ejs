@@ -21,7 +21,10 @@
       $.ajax({
         url: "/getLoginData",
         type: "POST",
-        data: {},
+        data: {
+          ajaxUserId: userId,
+          ajaxUserPassword: userPassword,
+        },
         success: function (response) {
           console.log(response);
         },
