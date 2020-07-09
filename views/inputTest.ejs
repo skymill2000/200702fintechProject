@@ -16,8 +16,16 @@
     //   $("#")
     $("#loginBtn").click(function () {
       var userId = $("#userId").val();
-      alert(userId);
-      console.log(userId);
+      var userPassword = $("#userPassword").val();
+      console.log(userId, userPassword);
+      $.ajax({
+        url: "/getLoginData",
+        type: "POST",
+        data: {},
+        success: function (response) {
+          console.log(response);
+        },
+      });
     });
   </script>
 </html>

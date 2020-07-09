@@ -24,6 +24,11 @@ app.get("/inputTest", function (req, res) {
   res.render("inputTest");
 });
 
+app.post("/getLoginData", function (req, res) {
+  console.log(req.body);
+  res.json("로그인 성공입니다.");
+});
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });
