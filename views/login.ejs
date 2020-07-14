@@ -169,7 +169,9 @@
             userPassword: userPassword,
           },
           success: function (data) {
-            console.log(data)
+			console.log(data)
+			sessionStorage.setItem('ourToken', data)
+			window.location.href = "/main";
           },
         });
     })
