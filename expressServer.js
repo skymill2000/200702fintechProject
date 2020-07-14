@@ -42,6 +42,10 @@ app.get("/authResult", function (req, res) {
   });
 });
 
+app.post("/signup", function (req, res) {
+  console.log(req.body);
+});
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });
