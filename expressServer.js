@@ -29,15 +29,16 @@ app.get("/authResult", function (req, res) {
       code: authCode,
       client_id: "q7kH44ThJwjpvNRg0BbJvE1yxvx5X53DKz1rNgPF",
       client_secret: "yVT6irMr2h4ZTHzZY7sDpbvhm1nlOzr4nP7DYRVy",
-      redirect_uri: "redirect_uri",
+      redirect_uri: "http://localhost:3000/authResult",
       grant_type: "authorization_code",
       //#자기 키로 시크릿 변경
     },
   };
 
   request(option, function (error, response, body) {
-    console.log(body);
-    res.json(body);
+    var accessRequestResult = JSON.parse(body);
+    console.log(accessRequestResult);
+    res.render("resultChild", { data: accessRequestResult });
   });
 });
 
