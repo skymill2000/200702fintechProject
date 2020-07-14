@@ -55,12 +55,33 @@ app.get("/authResult", function (req, res) {
 
 app.post("/signup", function (req, res) {
   console.log(req.body);
+  var userName = req.body.userName;
+  var userEmail = req.body.userEmail;
+  var userPassword = req.body.userPassword;
+  var userAccessToken = req.body.userAccessToken;
+  var userRefreshToken = req.body.userRefreshToken;
+  var userSeqNo = req.body.userSeqNo;
+
   var sql =
     "INSERT INTO `user` (`name`, `email`, `password`, `accesstoken`, `refreshtoken`, `userseqno`) VALUES (?, ?, ?, ?, ?, ?)";
-  connection.query(sql, [], function (error, results, fields) {
-    if (error) throw error;
-    console.log("The solution is: ", results);
-  });
+  connection.query(
+    sql,
+    [
+      userName,
+      userEmail,
+      userPassword,
+      userAccessToken,
+      userRefreshToken,
+      userSeqNo,
+    ],
+    function (error, results, fields) {
+      if (error) throw error;
+      else {
+        console.log("sql :", this.sql);
+        res.json(1);
+      }
+    }
+  );
 });
 
 app.listen(3000, function () {
