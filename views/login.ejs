@@ -158,7 +158,21 @@
 	<script src="js/global.script.js"></script>
     <script>
 	$("#loginBtn").click(function(){
-        })
+        // #ajax 아이디 패스워드를 post 방식으로 '/login' 라우터에 데이터를 전송
+        var userEmail = $("#userEmail").val();
+        var userPassword = $("#userPassword").val();
+        $.ajax({
+          url: "/login",
+          type: "POST",
+          data: {
+            userEmail: userEmail,
+            userPassword: userPassword,
+          },
+          success: function (data) {
+            console.log(data)
+          },
+        });
+    })
     </script>
 	
 </body>

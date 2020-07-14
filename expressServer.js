@@ -88,6 +88,28 @@ app.post("/signup", function (req, res) {
   );
 });
 
+app.post("/login", function (req, res) {
+  console.log("사용자 입력정보 :", req.body);
+  var userEmail = req.body.userEmail;
+  var userPassword = req.body.userPassword;
+  var sql = "SELECT * FROM user WHERE email = ?";
+  connection.query(sql, [userEmail], function (error, results, fields) {
+    if (error) throw error;
+    else {
+      if (results.length == 0) {
+        res.json("등록되지 않은 아이디 입니다.");
+      } else {
+        var dbPassword = results[0].password;
+        if (userPassword == dbPassword) {
+          res.json("로그인 성공");
+        } else {
+          res.json("비밀번호가 다릅니다!");
+        }
+      }
+    }
+  });
+});
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });
