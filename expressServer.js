@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const request = require("request");
+const jwt = require("jsonwebtoken");
+const auth = require("./lib/auth");
 
 var mysql = require("mysql");
 
@@ -27,6 +29,10 @@ app.get("/signup", function (req, res) {
 
 app.get("/login", function (req, res) {
   res.render("login");
+});
+
+app.get("/authTest", auth, function (req, res) {
+  res.json("환영합니다 우리 고객님");
 });
 
 app.get("/authResult", function (req, res) {
@@ -101,7 +107,23 @@ app.post("/login", function (req, res) {
       } else {
         var dbPassword = results[0].password;
         if (userPassword == dbPassword) {
-          res.json("로그인 성공");
+          var tokenKey = "fintech";
+          jwt.sign(
+            {
+              userId: results[0].id,
+              userEmail: results[0].email,
+            },
+            tokenKey,
+            {
+              expiresIn: "10d",
+              issuer: "fintech.admin",
+              subject: "user.login.info",
+            },
+            function (err, token) {
+              console.log("로그인 성공", token);
+              res.json(token);
+            }
+          );
         } else {
           res.json("비밀번호가 다릅니다!");
         }
