@@ -2,6 +2,17 @@ const express = require("express");
 const app = express();
 const request = require("request");
 
+var mysql = require("mysql");
+
+var connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "1q2w3e4r",
+  database: "fintech02",
+});
+
+connection.connect();
+
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
@@ -44,6 +55,12 @@ app.get("/authResult", function (req, res) {
 
 app.post("/signup", function (req, res) {
   console.log(req.body);
+  var sql =
+    "INSERT INTO `user` (`name`, `email`, `password`, `accesstoken`, `refreshtoken`, `userseqno`) VALUES (?, ?, ?, ?, ?, ?)";
+  connection.query(sql, [], function (error, results, fields) {
+    if (error) throw error;
+    console.log("The solution is: ", results);
+  });
 });
 
 app.listen(3000, function () {
