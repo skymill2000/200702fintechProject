@@ -32,6 +32,7 @@ app.get("/login", function (req, res) {
 });
 
 app.get("/authTest", auth, function (req, res) {
+  console.log(req.decoded);
   res.json("환영합니다 우리 고객님");
 });
 
@@ -136,26 +137,34 @@ app.post("/login", function (req, res) {
   });
 });
 
-app.post("/list", function (req, res) {
-  var option = {
-    method: "GET",
-    url: "https://testapi.openbanking.or.kr/v2.0/user/me",
-    headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIxMTAwMDM0NzM2Iiwic2NvcGUiOlsiaW5xdWlyeSIsImxvZ2luIiwidHJhbnNmZXIiXSwiaXNzIjoiaHR0cHM6Ly93d3cub3BlbmJhbmtpbmcub3Iua3IiLCJleHAiOjE2MDI0ODA1NzQsImp0aSI6Ijc1YmQ2MjkzLTQ0ZWMtNDViYS04ZjAxLTRlM2YwNTZlZjE1ZiJ9.KW33wZw6wwA73qkQ9A5WYp8DUo5hyUdUGRNH6XeBJq8",
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
-    qs: {
-      user_seq_no: "1100034736",
-      //#자기 키로 시크릿 변경
-    },
-  };
-
-  request(option, function (error, response, body) {
-    var listResult = JSON.parse(body);
-    console.log(listResult);
-    res.json(listResult);
+app.post("/list", auth, function (req, res) {
+  var userId = req.decoded.userId;
+  var sql = "SELECT * FROM user WHERE id = ?";
+  connection.query(sql, [userId], function (err, results) {
+    if (err) {
+      console.error(err);
+      throw err;
+    } else {
+      console.log(("list 에서 조회한 개인 값 :", results));
+      var option = {
+        method: "GET",
+        url: "https://testapi.openbanking.or.kr/v2.0/user/me",
+        headers: {
+          Authorization: "Bearer " + results[0].accesstoken,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+        qs: {
+          user_seq_no: results[0].userseqno,
+          //#자기 키로 시크릿 변경
+        },
+      };
+      request(option, function (error, response, body) {
+        var listResult = JSON.parse(body);
+        console.log(listResult);
+        res.json(listResult);
+      });
+    }
   });
 });
 
