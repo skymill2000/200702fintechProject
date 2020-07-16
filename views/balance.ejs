@@ -266,7 +266,7 @@
         return b;
       }
       var qs = getQueryStringObject();
-      var jwtToken = sessionStorage.getItem("jwtToken");
+      var jwtToken = sessionStorage.getItem("ourToken");
       console.log(qs, jwtToken);
       $.ajax({
         url: "/balance",

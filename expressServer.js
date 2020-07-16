@@ -172,7 +172,42 @@ app.post("/list", auth, function (req, res) {
   });
 });
 
-app.post("/balance", function (req, res) {});
+app.post("/balance", auth, function (req, res) {
+  var userId = req.decoded.userId;
+  var fin_use_num = req.body.fin_use_num;
+
+  console.log("유저 아이디, 핀테크번호 : ", userId, fin_use_num);
+
+  var sql = "SELECT * FROM user WHERE id = ?";
+  connection.query(sql, [userId], function (err, results) {
+    if (err) {
+      console.error(err);
+      throw err;
+    } else {
+      console.log(("list 에서 조회한 개인 값 :", results));
+      var option = {
+        method: "GET",
+        url: "https://testapi.openbanking.or.kr/v2.0/account/balance/fin_num",
+        headers: {
+          Authorization: "Bearer " + results[0].accesstoken,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+        qs: {
+          bank_tran_id: "T991599190U000000003",
+          fintech_use_num: fin_use_num,
+          tran_dtime: "20200716112900",
+          //#자기 키로 시크릿 변경
+        },
+      };
+      request(option, function (error, response, body) {
+        var balanceResult = JSON.parse(body);
+        console.log(balanceResult);
+        res.json(balanceResult);
+      });
+    }
+  });
+});
 
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
