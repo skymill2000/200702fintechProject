@@ -44,6 +44,10 @@ app.get("/balance", function (req, res) {
   res.render("balance");
 });
 
+app.get("/qrcode", function (req, res) {
+  res.render("qrcode");
+});
+
 app.get("/authResult", function (req, res) {
   var authCode = req.query.code;
   console.log("인증코드 : ", authCode);
