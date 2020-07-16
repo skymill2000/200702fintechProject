@@ -177,6 +177,8 @@ app.post("/balance", auth, function (req, res) {
   var fin_use_num = req.body.fin_use_num;
 
   console.log("유저 아이디, 핀테크번호 : ", userId, fin_use_num);
+  var countnum = Math.floor(Math.random() * 1000000000) + 1;
+  var transId = "T991599190U" + countnum; //이용기과번호 본인것 입력
 
   var sql = "SELECT * FROM user WHERE id = ?";
   connection.query(sql, [userId], function (err, results) {
@@ -194,7 +196,7 @@ app.post("/balance", auth, function (req, res) {
         },
         //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
         qs: {
-          bank_tran_id: "T991599190U000000003",
+          bank_tran_id: transId,
           fintech_use_num: fin_use_num,
           tran_dtime: "20200716112900",
           //#자기 키로 시크릿 변경
