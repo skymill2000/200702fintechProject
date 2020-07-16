@@ -282,6 +282,19 @@
           $("#balanceAmount").text(data.balance_amt);
         },
       });
+      $.ajax({
+        url: "/transactionList",
+        type: "POST",
+        headers: {
+          ourtoken: jwtToken,
+        },
+        data: {
+          fin_use_num: qs.fin_use_num,
+        },
+        success: function (data) {
+          console.log("해당 계좌의 잔액은 :", data.balance_amt);
+        },
+      });
     </script>
   </body>
 </html>
