@@ -269,7 +269,7 @@
       var jwtToken = sessionStorage.getItem("jwtToken");
       console.log(qs, jwtToken);
       $.ajax({
-        url: "http://localhost:3000/balance",
+        url: "/balance",
         type: "POST",
         headers: {
           ourtoken: jwtToken,

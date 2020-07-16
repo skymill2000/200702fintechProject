@@ -172,6 +172,8 @@ app.post("/list", auth, function (req, res) {
   });
 });
 
+app.post("/balance", function (req, res) {});
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });
