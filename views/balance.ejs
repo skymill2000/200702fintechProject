@@ -212,7 +212,17 @@
             <div id="balanceText">
               <h1 id="balanceAmount"></h1>
             </div>
-            <div id="transactionList"></div>
+            <div id="transactionList">
+              <table>
+                <thead>
+                  <th>순번</th>
+                  <th>입 / 출금</th>
+                  <th>거래 내역</th>
+                  <th>거래 금액</th>
+                </thead>
+                <tbody id="transactionTable"></tbody>
+              </table>
+            </div>
           </div>
 
           <div class="form-divider"></div>
@@ -266,6 +276,9 @@
         return b;
       }
       var qs = getQueryStringObject();
+      function comma(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
       var jwtToken = sessionStorage.getItem("ourToken");
       console.log(qs, jwtToken);
       $.ajax({
@@ -279,7 +292,8 @@
         },
         success: function (data) {
           console.log("해당 계좌의 잔액은 :", data.balance_amt);
-          $("#balanceAmount").text(data.balance_amt);
+
+          $("#balanceAmount").text(comma(data.balance_amt + "원"));
         },
       });
       $.ajax({
@@ -292,7 +306,23 @@
           fin_use_num: qs.fin_use_num,
         },
         success: function (data) {
-          console.log("해당 계좌의 잔액은 :", data.balance_amt);
+          console.log("해당 계좌의 잔액은 :", data);
+          var transactions = data.res_list;
+          for (var i = 0; i < transactions.length; i++) {
+            var transElement = transactions[i];
+            $("#transactionTable").append(
+              "<tr><td>" +
+                (i + 1) +
+                "</td><td>" +
+                transElement.inout_type +
+                "</td><td>" +
+                transElement.print_content +
+                "</td><td>" +
+                transElement.tran_amt +
+                "</td></tr>"
+            );
+          }
+          // #테이블 그리기 !
         },
       });
     </script>
