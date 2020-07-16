@@ -40,6 +40,10 @@ app.get("/main", function (req, res) {
   res.render("main");
 });
 
+app.get("/balance", function (req, res) {
+  res.render("balance");
+});
+
 app.get("/authResult", function (req, res) {
   var authCode = req.query.code;
   console.log("인증코드 : ", authCode);
