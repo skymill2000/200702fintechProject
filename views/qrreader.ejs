@@ -248,12 +248,22 @@
       <!-- if you dont want overlay add class .no-overlay -->
       <div class="popup-container">
         <div class="popup-header">
-          <h3 class="popup-title">Large Popup</h3>
+          <h3 class="popup-title">결제 금액 / 계좌 선택</h3>
           <span class="popup-close" data-dismiss="true"
             ><i class="fa fa-times"></i
           ></span>
         </div>
-        <div class="popup-content"></div>
+        <div class="popup-content">
+          결제금액 : <input type="text" id="amount" /> 원
+          <table>
+            <thead>
+              <th>번호</th>
+              <th>계좌별명</th>
+              <th>결제 버튼</th>
+            </thead>
+            <tbody id="accountList"></tbody>
+          </table>
+        </div>
         <div class="popup-footer">
           <button class="button orange">Save</button>
           <button class="button" data-dismiss="true">Cancel</button>
@@ -298,19 +308,20 @@
       });
       scanner.addListener("scan", function (content) {
         console.log(content);
-        $.ajax({
-          url: "/withdraw",
-          type: "POST",
-          headers: {
-            ourtoken: jwtToken,
-          },
-          data: {
-            fin_use_num: "199159919057870971744807",
-          },
-          success: function (data) {
-            console.log(data);
-          },
-        });
+
+        // $.ajax({
+        //   url: "/withdraw",
+        //   type: "POST",
+        //   headers: {
+        //     ourtoken: jwtToken,
+        //   },
+        //   data: {
+        //     fin_use_num: "199159919057870971744807",
+        //   },
+        //   success: function (data) {
+        //     console.log(data);
+        //   },
+        // });
       });
       Instascan.Camera.getCameras()
         .then(function (cameras) {
