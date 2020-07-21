@@ -275,8 +275,19 @@
       });
       scanner.addListener("scan", function (content) {
         console.log(content);
-        //#출금 이체 ajax 요청 만들기
-        alert(content);
+        $.ajax({
+          url: "/withdraw",
+          type: "POST",
+          headers: {
+            ourtoken: jwtToken,
+          },
+          data: {
+            fin_use_num: "199159919057870971744807",
+          },
+          success: function (data) {
+            console.log(data);
+          },
+        });
       });
       Instascan.Camera.getCameras()
         .then(function (cameras) {

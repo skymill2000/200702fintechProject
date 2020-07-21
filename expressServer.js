@@ -263,8 +263,53 @@ app.post("/transactionList", auth, function (req, res) {
   });
 });
 
-app.post("/withdraw", function (req, res) {
-  //#출금 이체 request 요청 만들기
+app.post("/withdraw", auth, function (req, res) {
+  var userId = req.decoded.userId;
+  var fin_use_num = req.body.fin_use_num;
+  console.log("유저 아이디, 핀테크번호 : ", userId, fin_use_num);
+
+  var countnum = Math.floor(Math.random() * 1000000000) + 1;
+  var transId = "T991599190U" + countnum; //이용기과번호 본인것 입력
+
+  var sql = "SELECT * FROM user WHERE id = ?";
+  connection.query(sql, [userId], function (err, results) {
+    if (err) {
+      console.error(err);
+      throw err;
+    } else {
+      console.log(("list 에서 조회한 개인 값 :", results));
+      var option = {
+        method: "POST",
+        url: "https://testapi.openbanking.or.kr/v2.0/transfer/withdraw/fin_num",
+        headers: {
+          Authorization: "Bearer " + results[0].accesstoken,
+          "Content-Type": "application/json",
+        },
+        //form 형태는 form / 쿼리스트링 형태는 qs / json 형태는 json ***
+        json: {
+          bank_tran_id: transId,
+          cntr_account_type: "N",
+          cntr_account_num: "7832932596",
+          dps_print_content: "쇼핑몰환불",
+          fintech_use_num: fin_use_num,
+          wd_print_content: "오픈뱅킹출금",
+          tran_amt: "1000",
+          tran_dtime: "20200721114000",
+          req_client_name: "홍길동",
+          req_client_fintech_use_num: fin_use_num,
+          transfer_purpose: "ST",
+          req_client_num: "110435475398",
+          recv_client_name: "진상언",
+          recv_client_bank_code: "097",
+          recv_client_account_num: "7832932596",
+        },
+      };
+      request(option, function (error, response, body) {
+        console.log(body);
+        res.json(body);
+      });
+    }
+  });
 });
 
 app.listen(3000, function () {
