@@ -208,7 +208,9 @@
         <!-- Header area end -->
         <!-- Page content start -->
         <main>
-          <div class="container"></div>
+          <div class="container">
+            <video id="preview"></video>
+          </div>
 
           <div class="form-divider"></div>
 
@@ -248,6 +250,7 @@
     <script src="js/jquery-3.2.1.min.js"></script>
     <!-- Template global script file. requared all pages -->
     <script src="js/global.script.js"></script>
+    <script src="js/instascan.min.js"></script>
     <script>
       function getQueryStringObject() {
         var a = window.location.search.substr(1).split("&");
@@ -266,6 +269,24 @@
       }
       var jwtToken = sessionStorage.getItem("ourToken");
       console.log(qs, jwtToken);
+
+      let scanner = new Instascan.Scanner({
+        video: document.getElementById("preview"),
+      });
+      scanner.addListener("scan", function (content) {
+        console.log(content);
+      });
+      Instascan.Camera.getCameras()
+        .then(function (cameras) {
+          if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+          } else {
+            console.error("No cameras found.");
+          }
+        })
+        .catch(function (e) {
+          console.error(e);
+        });
     </script>
   </body>
 </html>
