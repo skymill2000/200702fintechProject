@@ -308,6 +308,30 @@
       });
       scanner.addListener("scan", function (content) {
         console.log(content);
+        $("#largePopup").show();
+        $.ajax({
+          url: "/list",
+          type: "POST",
+          headers: {
+            ourtoken: jwtToken,
+          },
+          success: function (data) {
+            console.log(data.res_list);
+            for (var i = 0; i < data.res_list.length; i++) {
+              var element = data.res_list[i];
+              console.log(element);
+              $("#accountList").append(
+                "<tr><td>" +
+                  (i + 1) +
+                  "</td><td>" +
+                  element.account_alias +
+                  "</td><td>" +
+                  "<button>결제하기</button>" +
+                  "</td></tr>"
+              );
+            }
+          },
+        });
 
         // $.ajax({
         //   url: "/withdraw",
