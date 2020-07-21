@@ -306,8 +306,14 @@
       let scanner = new Instascan.Scanner({
         video: document.getElementById("preview"),
       });
+
+      var to_fin_use_num = undefined; // qr 코드로 부터 읽은 핀테크 번호
+
       scanner.addListener("scan", function (content) {
         console.log(content);
+
+        to_fin_use_num = content;
+
         $("#largePopup").show();
         $.ajax({
           url: "/list",
@@ -326,26 +332,14 @@
                   "</td><td>" +
                   element.account_alias +
                   "</td><td>" +
-                  "<button>결제하기</button>" +
+                  "<button onclick=\"pay('" +
+                  element.fintech_use_num +
+                  "')\">결제하기</button>" +
                   "</td></tr>"
               );
             }
           },
         });
-
-        // $.ajax({
-        //   url: "/withdraw",
-        //   type: "POST",
-        //   headers: {
-        //     ourtoken: jwtToken,
-        //   },
-        //   data: {
-        //     fin_use_num: "199159919057870971744807",
-        //   },
-        //   success: function (data) {
-        //     console.log(data);
-        //   },
-        // });
       });
       Instascan.Camera.getCameras()
         .then(function (cameras) {
@@ -358,6 +352,24 @@
         .catch(function (e) {
           console.error(e);
         });
+
+      function pay(useFintechNo) {
+        $.ajax({
+          url: "/withdraw",
+          type: "POST",
+          headers: {
+            ourtoken: jwtToken,
+          },
+          data: {
+            fin_use_num: useFintechNo,
+            to_fin_use_num: to_fin_use_num,
+            amount: $("#amount").val(),
+          },
+          success: function (data) {
+            console.log(data);
+          },
+        });
+      }
     </script>
   </body>
 </html>

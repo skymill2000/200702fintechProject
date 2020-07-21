@@ -265,8 +265,16 @@ app.post("/transactionList", auth, function (req, res) {
 
 app.post("/withdraw", auth, function (req, res) {
   var userId = req.decoded.userId;
+  var amount = req.body.amount;
   var fin_use_num = req.body.fin_use_num;
-  console.log("유저 아이디, 핀테크번호 : ", userId, fin_use_num);
+  var to_fin_use_num = req.body.to_fin_use_num;
+  console.log(
+    "유저 아이디, 출금 핀테크번호, 입금할 핀테크번호 : ",
+    userId,
+    fin_use_num,
+    to_fin_use_num,
+    amount
+  );
 
   var countnum = Math.floor(Math.random() * 1000000000) + 1;
   var transId = "T991599190U" + countnum; //이용기과번호 본인것 입력
@@ -305,8 +313,7 @@ app.post("/withdraw", auth, function (req, res) {
         },
       };
       request(option, function (error, response, body) {
-        console.log(body);
-        res.json(body);
+        //#입금이체 request 만들기
       });
     }
   });
