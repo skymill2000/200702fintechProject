@@ -263,6 +263,10 @@ app.post("/transactionList", auth, function (req, res) {
   });
 });
 
+app.post("/withdraw", function (req, res) {
+  //#출금 이체 request 요청 만들기
+});
+
 app.listen(3000, function () {
   console.log("Example app listening at http://localhost:3000");
 });

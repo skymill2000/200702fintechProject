@@ -275,6 +275,8 @@
       });
       scanner.addListener("scan", function (content) {
         console.log(content);
+        //#출금 이체 ajax 요청 만들기
+        alert(content);
       });
       Instascan.Camera.getCameras()
         .then(function (cameras) {
