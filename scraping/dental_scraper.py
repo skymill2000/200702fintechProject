@@ -14,6 +14,14 @@ def rePlaceData(value):
 
 
 def getAIAData(name, birth, gender):
+    driver = webdriver.Chrome('./chromedriver')
+    scrapingResult = {
+        'company': "라이나",
+        'price': 0,
+        'contents': []
+    }
+    driver.get(
+        'https://www.aia.co.kr/ko/our-products/medical-protection/non-par-denteal-health-plan.html#')
 
 
 def getLinaData(name, birth, gender):
