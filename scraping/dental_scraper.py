@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
 from selenium import webdriver
-driver = webdriver.Chrome('./chromedriver')
 
 
 def rePlaceData(value):
@@ -81,12 +80,16 @@ def getLinaData(name, birth, gender):
     resultBtn = driver.find_element_by_xpath(
         '//*[@id="btn_direct_dental_cal"]')
     resultBtn.click()
-    htmlResult = driver.find_element_by_xpath('//*[@id="mo_amount_span"]').text
+    driver.implicitly_wait(6)
+
+    htmlResult = driver.find_element_by_id('mo_amount_span').text
     resultValue = rePlaceData(htmlResult)
     scrapingResult['price'] = resultValue
-    driver.implicitly_wait(1)
+    driver.implicitly_wait(2)
     detailBtn = driver.find_element_by_xpath('//*[@id="openLayerplanPonA2"]')
     detailBtn.click()
+    driver.implicitly_wait(2)
+
     tableBody = driver.find_element_by_xpath(
         '//*[@id="planPonA2"]/div/div[2]/div/div/table[1]').find_element_by_tag_name('tbody')
     rows = tableBody.find_elements_by_tag_name("tr")
@@ -98,6 +101,3 @@ def getLinaData(name, birth, gender):
                                 0].text)
     scrapingResult['contents'] = contentsList
     return scrapingResult
-
-
-getAIAData('오', '890119', 0)
